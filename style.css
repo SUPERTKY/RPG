@@ -10,12 +10,12 @@
     font-family: sans-serif;
   }
   
-  #title-screen {
-    background-image: url("assets/bg.jpg");
-    background-size: cover;
-    background-position: center;
-    width: 100vw;
-    height: 100vh;
+#title-screen {
+  background-image: url("assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
   
     display: flex;
     flex-direction: column;
