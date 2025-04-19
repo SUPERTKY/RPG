@@ -44,19 +44,28 @@ body, html {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
 }
 
-#player-name {
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-  text-align: center;
-  border-radius: 8px;
+#name-label {
+  font-size: 18px;
+  color: white;
+  text-shadow: 2px 2px 4px black;
+}
+
+#name-letter-box {
+  font-size: 20px;
+  color: white;
+  min-height: 30px;
+  padding: 5px 10px;
   border: none;
+  outline: none;
+  text-shadow: 2px 2px 4px black;
+  background: transparent;
+  border-bottom: 2px solid white;
 }
 
 #start-button {
