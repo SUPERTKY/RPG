@@ -12,13 +12,15 @@ window.addEventListener("load", () => {
 
   startButton.addEventListener("click", () => {
     const name = playerNameInput.value.trim();
+
     if (name.length === 0) {
       alert("名前を入力してください。");
-    } else {
-      localStorage.setItem("playerName", name);
-      nameInputContainer.classList.add("hidden");
-      if (bgm.paused) bgm.play();
+      return;
     }
+
+    localStorage.setItem("playerName", name);
+    nameInputContainer.remove(); // ← フレームも一緒に消える
+    if (bgm.paused) bgm.play();
   });
 });
 
