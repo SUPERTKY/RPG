@@ -28,15 +28,16 @@ body, html {
 
 #name-input-container {
   position: relative;
-  width: 500px;
-  height: 200px;
+  display: inline-block; /* サイズは画像に合わせる */
 }
 
+
 #name-frame {
-  width: 100%;
-  height: 100%;
+  width: 600px; /* ← 必要に応じて固定サイズにしてOK */
+  height: auto;
   display: block;
 }
+
 
 #name-ui {
   position: absolute;
