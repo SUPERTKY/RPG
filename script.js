@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
   const bgm = document.getElementById("bgm");
   const nameInputContainer = document.getElementById("name-input-container");
+  const nameUI = document.getElementById("name-ui");
   const nameBox = document.getElementById("name-letter-box");
   const startButton = document.getElementById("start-button");
 
@@ -8,6 +9,8 @@ window.addEventListener("load", () => {
 
   if (!storedName) {
     nameInputContainer.classList.remove("hidden");
+  } else {
+    nameUI.style.display = "none"; // 初回じゃなければUI非表示（画像は残す）
   }
 
   startButton.addEventListener("click", () => {
@@ -24,15 +27,8 @@ window.addEventListener("load", () => {
     }
 
     localStorage.setItem("playerName", name);
-    nameInputContainer.remove(); // 枠ごと消す
+
+    nameUI.style.display = "none"; // 🔁 UIだけ消して、画像は残す
     if (bgm.paused) bgm.play();
   });
-});
-
-window.addEventListener("click", () => {
-  const bgm = document.getElementById("bgm");
-  const storedName = localStorage.getItem("playerName");
-  if (storedName && bgm.paused) {
-    bgm.play();
-  }
 });
