@@ -57,15 +57,16 @@ body, html {
 }
 
 #name-letter-box {
+  padding: 10px;
   font-size: 20px;
-  color: white;
-  min-height: 30px;
-  padding: 5px 10px;
+  width: 100%;
+  text-align: center;
   border: none;
-  outline: none;
-  text-shadow: 2px 2px 4px black;
-  background: transparent;
-  border-bottom: 2px solid white;
+  background-color: transparent; /* ← 背景を透明に */
+  color: white; /* 文字色を白に */
+  text-shadow: 2px 2px 4px black; /* ふち付きに */
+  outline: none; /* 青い選択枠を消す */
+  font-family: 'serif'; /* お好みで */
 }
 
 #start-button {
