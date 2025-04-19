@@ -18,9 +18,17 @@ window.addEventListener("load", () => {
       return;
     }
 
+    // 名前を保存し、表示を完全に隠す
     localStorage.setItem("playerName", name);
-    nameInputContainer.remove(); // ← フレームも一緒に消える
+    nameInputContainer.style.display = "none"; // ← ここをremove()の代わりにする
     if (bgm.paused) bgm.play();
+  });
+
+  // Enter / Spaceでフォームが送信されないようにする
+  playerNameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+    }
   });
 });
 
