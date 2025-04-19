@@ -28,16 +28,15 @@ body, html {
 
 #name-input-container {
   position: relative;
-  display: inline-block; /* サイズは画像に合わせる */
+  width: 500px;
+  height: 200px;
 }
-
 
 #name-frame {
-  width: 600px; /* ← 必要に応じて固定サイズにしてOK */
-  height: auto;
+  width: 100%;
+  height: 100%;
   display: block;
 }
-
 
 #name-ui {
   position: absolute;
@@ -45,34 +44,20 @@ body, html {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
-#name-label {
-  font-size: 18px;
-  color: white;
-  text-shadow: 2px 2px 4px black;
-}
-
-#name-letter-box {
-  font-size: 20px;
-  color: white;
-  min-height: 30px;
-  padding: 5px 10px;
-  border: none;
-  outline: none;
-  text-shadow: 2px 2px 4px black;
-  background: transparent;
-  border-bottom: 2px solid white;
-
+#player-name {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
   text-align: center;
-  font-family: 'serif'; /* RPGっぽいフォント（任意） */
-  caret-color: white;   /* 入力カーソルの色 */
+  border-radius: 8px;
+  border: none;
 }
-
 
 #start-button {
   padding: 8px 20px;
