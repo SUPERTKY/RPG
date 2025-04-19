@@ -3,11 +3,14 @@ window.addEventListener("load", () => {
   const nameInputContainer = document.getElementById("name-input-container");
   const playerNameInput = document.getElementById("player-name");
   const startButton = document.getElementById("start-button");
+  const playButton = document.getElementById("play-button");
 
   const storedName = localStorage.getItem("playerName");
 
   if (!storedName) {
     nameInputContainer.classList.remove("hidden");
+  } else {
+    playButton.classList.remove("hidden"); // 名前登録済みならプレイボタン表示
   }
 
   startButton.addEventListener("click", () => {
@@ -18,17 +21,21 @@ window.addEventListener("load", () => {
       return;
     }
 
-    // 名前を保存し、表示を完全に隠す
     localStorage.setItem("playerName", name);
-    nameInputContainer.style.display = "none"; // ← ここをremove()の代わりにする
+    nameInputContainer.style.display = "none";
+    playButton.classList.remove("hidden"); // 決定後プレイボタンを表示
+
     if (bgm.paused) bgm.play();
   });
 
-  // Enter / Spaceでフォームが送信されないようにする
   playerNameInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
     }
+  });
+
+  playButton.addEventListener("click", () => {
+    alert("ゲームスタート！"); // ←ここに本編の遷移処理を書く
   });
 });
 
