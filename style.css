@@ -58,6 +58,18 @@ body, html {
   border-radius: 8px;
   border: none;
 }
+#play-button {
+  width: 200px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hidden {
+  display: none;
+}
 
 #start-button {
   padding: 8px 20px;
