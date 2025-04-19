@@ -25,3 +25,39 @@ body, html {
   color: white;
   text-shadow: 2px 2px 5px black;
 }
+
+#name-input-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#player-name {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+}
+
+#start-button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+#start-button:hover {
+  background-color: #666;
+}
+
+.hidden {
+  display: none;
+}
+
