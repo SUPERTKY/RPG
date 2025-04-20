@@ -35,11 +35,13 @@ window.addEventListener("load", () => {
     }
   });
 
- playButton.addEventListener("click", () => {
-    playSound.currentTime = 0; // 毎回最初から再生
-    playSound.play();
-    alert("ゲームスタート！"); // ←ここを本編の処理に置き換えてOK
-  });
+playButton.addEventListener("click", () => {
+  playSound.currentTime = 0;
+  playSound.play();
+
+  // 効果音再生と同時に次のシーンへ移動
+  window.location.href = "scene2.html"; // ←遷移先に合わせて書き換えてOK
+});
 });
 
 window.addEventListener("click", () => {
