@@ -4,6 +4,7 @@ window.addEventListener("load", () => {
   const playerNameInput = document.getElementById("player-name");
   const startButton = document.getElementById("start-button");
   const playButton = document.getElementById("play-button");
+    const playSound = document.getElementById("play-sound"); // ← 効果音
 
   const storedName = localStorage.getItem("playerName");
 
@@ -34,8 +35,10 @@ window.addEventListener("load", () => {
     }
   });
 
-  playButton.addEventListener("click", () => {
-    alert("ゲームスタート！"); // ←ここに本編の遷移処理を書く
+ playButton.addEventListener("click", () => {
+    playSound.currentTime = 0; // 毎回最初から再生
+    playSound.play();
+    alert("ゲームスタート！"); // ←ここを本編の処理に置き換えてOK
   });
 });
 
