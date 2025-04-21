@@ -32,4 +32,7 @@ body, html {
   width: auto;
   cursor: pointer;
   z-index: 9998;
+  border: 4px solid limegreen; /* 👈 クリック範囲を緑で可視化！ */
+  background-color: rgba(0, 255, 0, 0.2); /* 👈 背景も少し緑で見えるように */
 }
+
