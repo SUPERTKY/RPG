@@ -37,17 +37,31 @@ window.addEventListener("load", () => {
   });
 
 playButton.addEventListener("click", () => {
+  // 効果音再生
+  playSound.volume = 0.3;
   playSound.currentTime = 0;
   playSound.play();
 
-  // フェードイン開始
+  // フェード開始
   fadeOverlay.style.opacity = 1;
 
-  // 効果音終了後にシーン2へ遷移
+  // BGMフェードアウト
+  const fadeInterval = setInterval(() => {
+    if (bgm.volume > 0.01) {
+      bgm.volume -= 0.01;
+    } else {
+      bgm.volume = 0;
+      bgm.pause();
+      clearInterval(fadeInterval);
+    }
+  }, 50); // 50msごとに減らす（約1.5秒で消える）
+
+  // 効果音が終わったら遷移
   playSound.onended = () => {
     window.location.href = "scene2.html";
   };
 });
+
 });
 
 window.addEventListener("click", () => {
