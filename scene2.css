@@ -33,16 +33,9 @@ body, html {
   height: 48px; /* 高さだけ固定 */
   width: auto;  /* 横幅は自動調整 */
   cursor: pointer;
-  z-index: 9998;
-  opacity: 0;
+  z-index: 0;
   pointer-events: none;
   transition: opacity 0.3s;
   z-index: 0; /* ← フェードより下に */
-}
-
-
-#back-button.enabled {
-  pointer-events: auto;
-  opacity: 1;
 }
 
