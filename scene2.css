@@ -37,6 +37,7 @@ body, html {
   z-index: 0;
   transition: opacity 0.3s;
   z-index: 9998; /* ← フェードより下に */
+  opacity: 1;
 }
 #back-button.enabled {
   pointer-events: auto;
