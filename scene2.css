@@ -29,18 +29,18 @@ body, html {
 #back-button {
   position: fixed;
   top: 20px;
-  right: 20px;
-  padding: 10px 16px;
-  font-size: 16px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 8px;
+  left: 20px;
+  width: 48px; /* サイズはお好みで */
+  height: 48px;
   cursor: pointer;
   z-index: 10000;
   opacity: 0.8;
+  pointer-events: none; /* 初期は操作不可（明るくなるまで） */
+  transition: opacity 0.3s;
 }
 
-#back-button:hover {
+#back-button.enabled {
+  pointer-events: auto;
   opacity: 1;
 }
+
