@@ -1,14 +1,23 @@
 window.addEventListener("load", () => {
   const overlay = document.getElementById("fade-overlay");
   const content = document.getElementById("content");
+  const backButton = document.getElementById("back-button");
 
-  // フェードアウト開始
   setTimeout(() => {
     overlay.style.opacity = 0;
 
-    // 完全に明るくなってから操作可能にする
+    // フェード終了後、操作可能に
     setTimeout(() => {
       content.style.pointerEvents = "auto";
-    }, 2000); // フェード時間と同じ
-  }, 100); // 少し遅らせて確実にロードさせる
+      backButton.disabled = false;
+    }, 2000);
+  }, 100);
+
+  // ホームに戻る処理
+  backButton.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+
+  // 最初はボタン無効にしておく
+  backButton.disabled = true;
 });
