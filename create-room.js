@@ -2,15 +2,14 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getDatabase, ref, get, set, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyA7SXxjTK4OIRttEwJ1sDSgaXs45eZQcPQ",
+  authDomain: "myrpggame-5eba1.firebaseapp.com",
+  projectId: "myrpggame-5eba1",
+  storageBucket: "myrpggame-5eba1.firebasestorage.app",
+  messagingSenderId: "283723511502",
+  appId: "1:283723511502:web:4e5014928190c3a4e0829f"
+};
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
