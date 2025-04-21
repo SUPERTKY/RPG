@@ -39,4 +39,10 @@ body, html {
   z-index: 9998;
 
 }
+body {
+  background-image: url("assets/村の絵.png"); /* あなたの背景画像のパスに変更 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
