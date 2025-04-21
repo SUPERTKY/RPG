@@ -26,3 +26,21 @@ body, html {
   padding-top: 200px;
   pointer-events: none; /* 最初はクリック不可 */
 }
+#back-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 16px;
+  font-size: 16px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 10000;
+  opacity: 0.8;
+}
+
+#back-button:hover {
+  opacity: 1;
+}
