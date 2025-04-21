@@ -6,18 +6,14 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     overlay.style.opacity = 0;
 
-    // フェード終了後、操作可能に
     setTimeout(() => {
       content.style.pointerEvents = "auto";
-      backButton.disabled = false;
+      backButton.classList.add("enabled"); // ← 有効化
     }, 2000);
   }, 100);
 
-  // ホームに戻る処理
+  // 戻るボタンを押したらホームへ
   backButton.addEventListener("click", () => {
     window.location.href = "index.html";
   });
-
-  // 最初はボタン無効にしておく
-  backButton.disabled = true;
 });
