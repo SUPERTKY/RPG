@@ -30,15 +30,16 @@ body, html {
   position: fixed;
   top: 20px;
   left: 20px;
-  width: 48px; /* サイズはお好みで */
-  height: 48px;
+  height: 48px; /* 高さだけ固定 */
+  width: auto;  /* 横幅は自動調整 */
   cursor: pointer;
-  z-index: 10000;
-  opacity: 0.8;
-  pointer-events: none; /* 初期は操作不可（明るくなるまで） */
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s;
   z-index: 0; /* ← フェードより下に */
 }
+
 
 #back-button.enabled {
   pointer-events: auto;
