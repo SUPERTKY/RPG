@@ -29,17 +29,14 @@ body, html {
 #back-button {
   position: fixed;
   top: 20px;
-    pointer-events: none;
   left: 20px;
-  height: 48px; /* 高さだけ固定 */
-  width: auto;  /* 横幅は自動調整 */
+  height: 48px;
+  width: auto;
   cursor: pointer;
-  z-index: 0;
-  transition: opacity 0.3s;
-  z-index: 9998; /* ← フェードより下に */
-  opacity: 0.8;
+  z-index: 9998;
+  pointer-events: none; /* 最初は押せない */
 }
+
 #back-button.enabled {
-  pointer-events: auto;
-    opacity: 1;
+  pointer-events: auto;  /* 明るくなったら押せるようにする */
 }
