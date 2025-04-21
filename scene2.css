@@ -29,6 +29,7 @@ body, html {
 #back-button {
   position: fixed;
   top: 20px;
+    pointer-events: none;
   left: 20px;
   height: 48px; /* 高さだけ固定 */
   width: auto;  /* 横幅は自動調整 */
@@ -37,4 +38,6 @@ body, html {
   transition: opacity 0.3s;
   z-index: 9998; /* ← フェードより下に */
 }
-
+#back-button.enabled {
+  pointer-events: auto;
+}
