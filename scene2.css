@@ -45,4 +45,12 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+#create-room-button {
+  width: 200px; /* お好みで調整：小さくしたいならこの数値を小さく */
+  height: auto;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto; /* ← 中央に配置したいなら */
+}
+
 
