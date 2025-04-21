@@ -36,6 +36,6 @@ body, html {
   z-index: 0;
   pointer-events: none;
   transition: opacity 0.3s;
-  z-index: 0; /* ← フェードより下に */
+  z-index: 9998; /* ← フェードより下に */
 }
 
