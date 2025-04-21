@@ -34,7 +34,7 @@ body, html {
   width: auto;
   cursor: pointer;
   z-index: 9998;
-  pointer-events: none; /* 最初は押せない */
+  pointer-events: auto; /* 最初は押せない */
 }
 
 #back-button.enabled {
