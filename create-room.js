@@ -29,7 +29,7 @@ const firebaseConfig = {
     return roomNumber;
   }
 
-  document.getElementById("create-room-button").addEventListener("click", async () => {
+ document.getElementById("create-room-button").addEventListener("click", async () => {
     const roomNumber = await generateUniqueRoomNumber();
 
     const roomRef = ref(db, `rooms/${roomNumber}`);
