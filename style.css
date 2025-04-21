@@ -80,10 +80,6 @@ body, html {
   cursor: pointer;
   border-radius: 8px;
 }
-
-.hidden {
-  display: none;
-}
 #fade-overlay {
   position: fixed;
   top: 0;
@@ -96,4 +92,8 @@ body, html {
   transition: opacity 2s ease;
   z-index: 9999;
 }
+.hidden {
+  display: none;
+}
+
 
