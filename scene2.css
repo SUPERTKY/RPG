@@ -34,7 +34,6 @@ body, html {
   width: auto;  /* 横幅は自動調整 */
   cursor: pointer;
   z-index: 0;
-  pointer-events: none;
   transition: opacity 0.3s;
   z-index: 9998; /* ← フェードより下に */
 }
