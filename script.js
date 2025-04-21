@@ -39,8 +39,13 @@ playButton.addEventListener("click", () => {
   playSound.currentTime = 0;
   playSound.play();
 
-  // 効果音再生と同時に次のシーンへ移動
-  window.location.href = "scene2.html"; // ←遷移先に合わせて書き換えてOK
+  // フェードイン開始
+  fadeOverlay.style.opacity = 1;
+
+  // 効果音終了後にシーン2へ遷移
+  playSound.onended = () => {
+    window.location.href = "scene2.html";
+  };
 });
 });
 
