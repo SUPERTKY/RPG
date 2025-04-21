@@ -17,6 +17,11 @@ body, html {
   opacity: 1;
   transition: opacity 2s ease;
   z-index: 9999;
+  pointer-events: auto; /* ← 初期はブロック */
+}
+
+#fade-overlay.hidden {
+  pointer-events: none; /* ← 非表示になったらクリック通す！ */
 }
 
 #content {
