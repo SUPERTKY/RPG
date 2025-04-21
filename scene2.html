@@ -6,13 +6,16 @@
   <link rel="stylesheet" href="scene2.css">
 </head>
 
-
 <body>
   <div id="fade-overlay"></div>
   <div id="content">
     <h1>これはシーン2です</h1>
   </div>
+
+  <!-- ✅ ボタンは script の前に置く！ -->
+  <img id="back-button" src="assets/back-button.png" alt="戻る">
+
+  <!-- ✅ script は一番最後 -->
   <script src="scene2.js"></script>
-    <img id="back-button" src="assets/back-button.png" alt="戻る">
 </body>
 </html>
