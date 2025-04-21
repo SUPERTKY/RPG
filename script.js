@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
   const startButton = document.getElementById("start-button");
   const playButton = document.getElementById("play-button");
     const playSound = document.getElementById("play-sound"); // ← 効果音
+   const fadeOverlay = document.getElementById("fade-overlay");
   //playSound.volume = 0.3;
   const storedName = localStorage.getItem("playerName");
 
