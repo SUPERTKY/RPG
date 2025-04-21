@@ -37,6 +37,7 @@ body, html {
   opacity: 0.8;
   pointer-events: none; /* 初期は操作不可（明るくなるまで） */
   transition: opacity 0.3s;
+  z-index: 0; /* ← フェードより下に */
 }
 
 #back-button.enabled {
