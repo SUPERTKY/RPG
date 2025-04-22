@@ -20,5 +20,5 @@ window.addEventListener("load", () => {
 });
 window.addEventListener("DOMContentLoaded", () => {
   const bgm = document.getElementById("bgm");
-  if (bgm) bgm.volume = 0.1;
+  if (bgm) bgm.volume = 0.5;
 });
