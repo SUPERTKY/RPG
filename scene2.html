@@ -265,16 +265,7 @@ submitJoin.addEventListener("click", async () => {
     return;
   }
 
-  // ルームが存在 → メンバーとして登録
-  const playerName = localStorage.getItem("playerName");
-  const userId = localStorage.getItem("userId");
 
-  await set(ref(db, `rooms/${roomNumber}/members/${playerName}`), {
-    userId,
-    joinedAt: Date.now()
-  });
-
-  alert(`✅ ルーム ${roomNumber} に参加しました！`);
     // ルームが存在 → メンバーとして登録
   const playerName = localStorage.getItem("playerName");
   const userId = localStorage.getItem("userId");
