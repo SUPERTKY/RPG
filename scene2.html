@@ -103,6 +103,16 @@ document.addEventListener("visibilitychange", async () => {
       console.warn("⚠️ visibilitychange削除失敗:", e);
     }
   }
+  
+});
+// タブが非表示になったときにホームへ強制移動する準備
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    // 2秒後に自動で index.html へ戻す
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
 });
 
 </script>
