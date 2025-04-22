@@ -29,23 +29,26 @@
   background-position: center;
   width: 300px;
   height: 250px;
-  font-family: 'serif';
-  color: #4b2e12;
-  font-weight: bold;
-  overflow-y: auto;
-  white-space: pre-line;
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.6;
-  padding: 40px 20px;
 
-  /* ✅ 左下に固定配置 */
   position: fixed;
   bottom: 20px;
   left: 20px;
   z-index: 9999;
-}
 
+  display: flex;
+  align-items: center;     /* ✅ 縦中央 */
+  justify-content: center; /* ✅ 横中央 */
+  text-align: center;
+
+  font-family: 'serif';
+  font-size: 14px;
+  font-weight: bold;
+  color: #4b2e12;
+  padding: 20px;
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
 
   #room-info {
     font-size: 14px;
