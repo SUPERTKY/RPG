@@ -83,7 +83,17 @@
       button.style.opacity = 1;
     }
   });
-
+  // 離脱時にルームを削除してホームへ戻す
+  window.addEventListener("beforeunload", async () => {
+    if (myRoomRef) {
+      try {
+        await remove(myRoomRef);
+        console.log("✅ ルームを削除しました");
+      } catch (e) {
+        console.warn("⚠️ ルーム削除失敗:", e);
+      }
+    }
+  });
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState === "hidden" && myRoomRef) {
     try {
