@@ -245,27 +245,6 @@ submitJoin.addEventListener("click", async () => {
   const roomNumber = document.getElementById("join-room-number").value;
   if (!roomNumber) return;
 
-  const roomRef = ref(db, `rooms/${roomNumber}`);
-  const snapshot = await get(roomRef);
-
-  if (!snapshot.exists()) {
-    errorDisplay.style.display = "block";
-    errorDisplay.style.opacity = "1";
-    errorSound.play();
-
-    // フェードアウト
-    setTimeout(() => {
-      errorDisplay.style.opacity = "0";
-    }, 100);
-
-    setTimeout(() => {
-      errorDisplay.style.display = "none";
-    }, 2100);
-
-    return;
-  }
-
-
     // ルームが存在 → メンバーとして登録
   const playerName = localStorage.getItem("playerName");
   const userId = localStorage.getItem("userId");
