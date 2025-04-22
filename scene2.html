@@ -18,6 +18,47 @@
   <audio id="bgm" src="assets/のどかな村で_2.mp3" autoplay loop></audio>
   <!-- ルーム作成ボタン -->
 <img id="create-room-button" src="assets/クリエイトルーム.png" alt="Create Room">
+  <!-- JOIN ボタン -->
+<img id="join-room-button" src="assets/join-room.png" alt="Join Room" style="display: block; margin: 10px auto; cursor: pointer;">
+
+<!-- 入力UI（最初は非表示） -->
+<div id="join-ui" style="display: none; text-align: center; margin-top: 10px;">
+  <div style="
+    background-image: url('assets/input-frame.png');
+    background-size: 100% 100%;
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  ">
+    <input id="join-room-number" type="text" maxlength="4" placeholder="番号" style="
+      border: none;
+      background: transparent;
+      width: 80%;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      outline: none;
+    ">
+  </div>
+  <button id="submit-join" style="margin-top: 10px; padding: 5px 15px; font-weight: bold; cursor: pointer;">参加</button>
+</div>
+
+<!-- エラーメッセージ & 効果音 -->
+<div id="join-error" style="
+  display: none;
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  opacity: 1;
+  transition: opacity 2s ease-out;
+">ないです</div>
+<audio id="error-sound" src="assets/error.mp3"></audio>
+
 <div id="rpg-frame">
   <div id="room-info">ルーム情報を読み込み中...</div>
 </div>
@@ -189,6 +230,51 @@ document.addEventListener("visibilitychange", () => {
       window.location.href = "index.html";
     });
   }
+});
+const joinButton = document.getElementById("join-room-button");
+const joinUI = document.getElementById("join-ui");
+const submitJoin = document.getElementById("submit-join");
+const errorDisplay = document.getElementById("join-error");
+const errorSound = document.getElementById("error-sound");
+
+joinButton.addEventListener("click", () => {
+  joinUI.style.display = "block";
+});
+
+submitJoin.addEventListener("click", async () => {
+  const roomNumber = document.getElementById("join-room-number").value;
+  if (!roomNumber) return;
+
+  const roomRef = ref(db, `rooms/${roomNumber}`);
+  const snapshot = await get(roomRef);
+
+  if (!snapshot.exists()) {
+    errorDisplay.style.display = "block";
+    errorDisplay.style.opacity = "1";
+    errorSound.play();
+
+    // フェードアウト
+    setTimeout(() => {
+      errorDisplay.style.opacity = "0";
+    }, 100);
+
+    setTimeout(() => {
+      errorDisplay.style.display = "none";
+    }, 2100);
+
+    return;
+  }
+
+  // ルームが存在 → メンバーとして登録
+  const playerName = localStorage.getItem("playerName");
+  const userId = localStorage.getItem("userId");
+
+  await set(ref(db, `rooms/${roomNumber}/members/${playerName}`), {
+    userId,
+    joinedAt: Date.now()
+  });
+
+  alert(`✅ ルーム ${roomNumber} に参加しました！`);
 });
 
 </script>
