@@ -18,50 +18,82 @@
 <img id="create-room-button" src="assets/クリエイトルーム.png" alt="Create Room">
 
 
+<!-- スクリプト：ルーム作成 + 離脱時削除 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getDatabase, ref, get, set, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  import { getDatabase, ref, get, set, child, remove } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA7SXxjTK4OIRttEwJ1sDSgaXs45eZQcPQ",
-  authDomain: "myrpggame-5eba1.firebaseapp.com",
-  projectId: "myrpggame-5eba1",
-  storageBucket: "myrpggame-5eba1.appspot.com",
-  messagingSenderId: "283723511502",
-  appId: "1:283723511502:web:4e5014928190c3a4e0829f",
-  databaseURL: "https://myrpggame-5eba1-default-rtdb.asia-southeast1.firebasedatabase.app"
-};
-
+  const firebaseConfig = {
+    apiKey: "AIzaSyA7SXxjTK4OIRttEwJ1sDSgaXs45eZQcPQ",
+    authDomain: "myrpggame-5eba1.firebaseapp.com",
+    projectId: "myrpggame-5eba1",
+    storageBucket: "myrpggame-5eba1.appspot.com",
+    messagingSenderId: "283723511502",
+    appId: "1:283723511502:web:4e5014928190c3a4e0829f",
+    databaseURL: "https://myrpggame-5eba1-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // 重複のないルーム番号を作成
+  const button = document.getElementById("create-room-button");
+  let myRoomRef = null;
+
+  // ユニークなルーム番号生成
   async function generateUniqueRoomNumber() {
     const dbRef = ref(db, "rooms");
     let roomNumber;
     let exists = true;
 
     while (exists) {
-      roomNumber = Math.floor(1000 + Math.random() * 9000).toString(); // 4桁のランダム数字
+      roomNumber = Math.floor(1000 + Math.random() * 9000).toString();
       const snapshot = await get(child(dbRef, roomNumber));
-      exists = snapshot.exists(); // すでに存在する番号かどうか
+      exists = snapshot.exists();
     }
 
     return roomNumber;
   }
 
- document.getElementById("create-room-button").addEventListener("click", async () => {
-    const roomNumber = await generateUniqueRoomNumber();
+  // ボタン押されたときの処理
+  button.addEventListener("click", async () => {
+    button.style.pointerEvents = "none";
+    button.style.opacity = 0.5;
 
-    const roomRef = ref(db, `rooms/${roomNumber}`);
-    await set(roomRef, {
-      createdAt: Date.now(),
-      status: "waiting",
-    });
+    try {
+      const roomNumber = await generateUniqueRoomNumber();
+      const roomRef = ref(db, `rooms/${roomNumber}`);
 
-    alert(`✅ ルーム ${roomNumber} が作成されました！`);
-    // あとはこの番号を画面表示 or コピペ可能にするなど
+      await set(roomRef, {
+        createdAt: Date.now(),
+        status: "waiting"
+      });
+
+      const confirm = await get(roomRef);
+      if (!confirm.exists()) {
+        throw new Error("ルーム作成失敗");
+      }
+
+      myRoomRef = roomRef;
+      alert(`✅ ルーム ${roomNumber} が作成されました！`);
+
+    } catch (err) {
+      console.error("エラー:", err);
+      alert("❌ ルーム作成に失敗しました！");
+      button.style.pointerEvents = "auto";
+      button.style.opacity = 1;
+    }
+  });
+
+  // 離脱時にルームを削除してホームへ戻す
+  window.addEventListener("beforeunload", async () => {
+    if (myRoomRef) {
+      try {
+        await remove(myRoomRef);
+        console.log("✅ ルームを削除しました");
+      } catch (e) {
+        console.warn("⚠️ ルーム削除失敗:", e);
+      }
+    }
   });
 </script>
 
