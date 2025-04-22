@@ -22,25 +22,30 @@
   <div id="room-info">ルーム情報を読み込み中...</div>
 </div>
   <style>
-  #rpg-frame {
-    background-image: url("assets/木のフレーム.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 300px;
-    height: 250px;
-    margin: 40px auto; /* 真ん中に配置 */
-    padding: 40px 20px 20px 20px;
-    font-family: 'serif';
-    color: #4b2e12;
-    font-weight: bold; /* ✅ 太字 */
-    overflow-y: auto;
-    white-space: pre-line;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: left;
-  }
+#rpg-frame {
+  background-image: url("assets/frame.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 300px;
+  height: 250px;
+  font-family: 'serif';
+  color: #4b2e12;
+  font-weight: bold;
+  overflow-y: auto;
+  white-space: pre-line;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 40px 20px;
+
+  /* ✅ 左下に固定配置 */
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
 
   #room-info {
     font-size: 14px;
