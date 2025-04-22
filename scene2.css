@@ -53,4 +53,11 @@ body {
   margin: 20px auto; /* ← 中央に配置したいなら */
 }
 
+#join-room-button {
+  width: 200px;
+  height: auto;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+}
 
