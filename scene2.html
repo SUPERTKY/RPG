@@ -59,29 +59,34 @@
     button.style.pointerEvents = "none";
     button.style.opacity = 0.5;
 
-    try {
-      const roomNumber = await generateUniqueRoomNumber();
-      const roomRef = ref(db, `rooms/${roomNumber}`);
+   try {
+  const roomNumber = await generateUniqueRoomNumber();
+  const roomRef = ref(db, `rooms/${roomNumber}`);
 
-      await set(roomRef, {
-        createdAt: Date.now(),
-        status: "waiting"
-      });
+  console.log("💾 ルームを書き込み中: ", roomNumber);
 
-      const confirm = await get(roomRef);
-      if (!confirm.exists()) {
-        throw new Error("ルーム作成失敗");
-      }
+  await set(roomRef, {
+    createdAt: Date.now(),
+    status: "waiting"
+  });
 
-      myRoomRef = roomRef;
-      alert(`✅ ルーム ${roomNumber} が作成されました！`);
+  // 成功したか確認
+  const confirm = await get(roomRef);
+  if (!confirm.exists()) {
+    throw new Error("⚠️ ルームがFirebase上に見つかりません（保存失敗）");
+  }
 
-    } catch (err) {
-      console.error("エラー:", err);
-      alert("❌ ルーム作成に失敗しました！");
-      button.style.pointerEvents = "auto";
-      button.style.opacity = 1;
-    }
+  console.log("✅ Firebase上にルーム作成完了");
+  myRoomRef = roomRef;
+  alert(`✅ ルーム ${roomNumber} が作成されました！`);
+
+} catch (err) {
+  console.error("❌ 作成中にエラー:", err);
+  alert("❌ ルーム作成に失敗しました！");
+  button.style.pointerEvents = "auto";
+  button.style.opacity = 1;
+}
+
   });
   // 離脱時にルームを削除してホームへ戻す
   window.addEventListener("beforeunload", async () => {
