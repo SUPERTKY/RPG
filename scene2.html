@@ -275,6 +275,38 @@ submitJoin.addEventListener("click", async () => {
   });
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
+    // ルームが存在 → メンバーとして登録
+  const playerName = localStorage.getItem("playerName");
+  const userId = localStorage.getItem("userId");
+
+  await set(ref(db, `rooms/${roomNumber}/members/${playerName}`), {
+    userId,
+    joinedAt: Date.now()
+  });
+
+  alert(`✅ ルーム ${roomNumber} に参加しました！`);
+
+  // ✅ 参加完了後にフレーム情報を更新
+  const roomRef = ref(db, `rooms/${roomNumber}`);
+  const snapshot = await get(roomRef);
+  if (snapshot.exists()) {
+    const data = snapshot.val();
+    const info = data.info;
+    const members = data.members || {};
+    const display =
+      `主催者: ${info?.host || "???"}\n` +
+      `番号: ${roomNumber}\n` +
+      `メンバー:\n` +
+      Object.keys(members)
+        .map(name => `・${name}`)
+        .join("\n");
+
+    const infoBox = document.getElementById("room-info");
+    if (infoBox) {
+      infoBox.innerText = display;
+    }
+  }
+
 });
 
 </script>
