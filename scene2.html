@@ -135,6 +135,17 @@
   }
 
 button.addEventListener("click", async () => {
+   // 他タブなどにすでに入ってないか確認
+  const onlineRef = ref(db, `online/${userId}`);
+  const onlineSnap = await get(onlineRef);
+  if (onlineSnap.exists()) {
+    const alreadyRoom = onlineSnap.val().room;
+    if (alreadyRoom !== requestedRoom) {
+      alert("⚠️ 他のタブや端末ですでにルームに参加中です！");
+      return;
+    }
+  }
+
   button.style.pointerEvents = "none";
   button.style.opacity = 0.5;
 
@@ -168,6 +179,28 @@ button.addEventListener("click", async () => {
         }
       }
     });
+    const confirm = await get(roomRef);
+if (!confirm.exists()) {
+  throw new Error("⚠️ Firebaseにルームが見つかりません（保存失敗）");
+}
+
+// ✅ 表示処理
+const data = confirm.val();
+const info = data.info;
+const members = data.members || {};
+const display =
+  `主催者: ${info?.host || "???"}\n` +
+  `番号: ${roomNumber}\n` +
+  `メンバー:\n` +
+  Object.keys(members)
+    .map(name => `・${name}`)
+    .join("\n");
+
+const infoBox = document.getElementById("room-info");
+if (infoBox) {
+  infoBox.innerText = display;
+}
+
 
     // 成功確認
     const confirm = await get(roomRef);
@@ -242,6 +275,14 @@ joinButton.addEventListener("click", () => {
 });
 
 submitJoin.addEventListener("click", async () => {
+    const requestedRoom = document.getElementById("join-room-number").value;
+  const currentRoom = localStorage.getItem("currentRoom");
+
+  if (currentRoom && currentRoom !== requestedRoom) {
+    alert("⚠️ すでに別のルームに入っています！");
+    return;
+  }
+
   const roomNumber = document.getElementById("join-room-number").value;
   if (!roomNumber) return;
 
@@ -253,6 +294,11 @@ submitJoin.addEventListener("click", async () => {
     userId,
     joinedAt: Date.now()
   });
+  await set(ref(db, `online/${userId}`), {
+  room: requestedRoom,
+  timestamp: Date.now()
+});
+
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
 
@@ -276,6 +322,32 @@ submitJoin.addEventListener("click", async () => {
       infoBox.innerText = display;
     }
   }
+  import { onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+// 主催者がルームを消したかどうかリアルタイムで監視
+const watchRef = ref(db, `rooms/${roomNumber}`);
+onValue(watchRef, (snapshot) => {
+  if (!snapshot.exists()) {
+    const errBox = document.getElementById("join-error");
+    errBox.textContent = "主催者が解散しました";
+    errBox.style.display = "block";
+    errBox.style.color = "red";
+    errBox.style.opacity = "1";
+
+    const errorSound = document.getElementById("error-sound");
+    if (errorSound) errorSound.play();
+
+    setTimeout(() => {
+      errBox.style.opacity = "0";
+    }, 1000);
+
+    setTimeout(() => {
+      errBox.style.display = "none";
+      localStorage.removeItem("currentRoom");
+      window.location.href = "index.html";
+    }, 2500);
+  }
+});
 
 });
 
