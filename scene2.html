@@ -212,15 +212,7 @@ if (infoBox) {
 
     // ✅ 表示処理
 
-    const info = data.info;
-    const members = data.members || {};
-    const display =
-      `主催者: ${info?.host || "???"}\n` +
-      `番号: ${roomNumber}\n` +
-      `メンバー:\n` +
-      Object.keys(members)
-        .map(name => `・${name}`)
-        .join("\n");
+   
 
     document.getElementById("room-info").innerText = display;
 
