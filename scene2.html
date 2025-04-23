@@ -202,8 +202,7 @@ if (infoBox) {
 }
 
 
-    // 成功確認
-    const confirm = await get(roomRef);
+
     if (!confirm.exists()) {
       throw new Error("⚠️ Firebaseにルームが見つかりません（保存失敗）");
     }
