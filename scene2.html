@@ -165,10 +165,12 @@ button.addEventListener("click", async () => {
       return;
     }
   }
+  const joinBtn = document.getElementById("join-room-button");
 
   button.style.pointerEvents = "none";
   button.style.opacity = 0.5;
-
+joinBtn.style.pointerEvents = "none";
+  joinBtn.style.opacity = 0.5;
 
 
   if (!playerName || !userId) {
