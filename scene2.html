@@ -100,6 +100,25 @@
 
 <!-- スクリプト：ルーム作成 + 離脱時削除 -->
 <script type="module">
+  const currentRoom = localStorage.getItem("currentRoom");
+
+if (currentRoom) {
+  const createBtn = document.getElementById("create-room-button");
+  const joinBtn = document.getElementById("join-room-button");
+
+  if (createBtn) {
+    createBtn.style.opacity = 0.4;
+    createBtn.style.pointerEvents = "none";
+  }
+
+  if (joinBtn) {
+    joinBtn.style.opacity = 0.4;
+    joinBtn.style.pointerEvents = "none";
+  }
+
+  console.log(`🛑 ルーム(${currentRoom})に入っているので作成・参加ボタンを封じました`);
+}
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getDatabase, ref, get, set, child, remove, onValue  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
@@ -279,12 +298,7 @@ joinButton.addEventListener("click", () => {
 
 submitJoin.addEventListener("click", async () => {
     const requestedRoom = document.getElementById("join-room-number").value;
-  const currentRoom = localStorage.getItem("currentRoom");
 
-  if (currentRoom && currentRoom !== requestedRoom) {
-    alert("⚠️ すでに別のルームに入っています！");
-    return;
-  }
 
   const roomNumber = document.getElementById("join-room-number").value;
   if (!roomNumber) return;
