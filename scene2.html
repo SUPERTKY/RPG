@@ -101,7 +101,7 @@
 <!-- スクリプト：ルーム作成 + 離脱時削除 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getDatabase, ref, get, set, child, remove } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  import { getDatabase, ref, get, set, child, remove, onValue  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA7SXxjTK4OIRttEwJ1sDSgaXs45eZQcPQ",
@@ -339,7 +339,7 @@ if (snapshot.val().info.host === playerName) {
       infoBox.innerText = display;
     }
   }
-  import { onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
 
 // 主催者がルームを消したかどうかリアルタイムで監視
 const watchRef = ref(db, `rooms/${roomNumber}`);
