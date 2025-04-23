@@ -242,6 +242,18 @@ if (infoBox) {
         console.warn("⚠️ ルーム削除失敗:", e);
       }
     }
+    const leavingRoom = localStorage.getItem("currentRoom");
+if (leavingRoom && playerName) {
+  try {
+    await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
+    await remove(ref(db, `online/${userId}`));
+    localStorage.removeItem("currentRoom");
+    console.log("✅ 離脱：オンライン情報とメンバー情報を削除しました");
+  } catch (e) {
+    console.warn("⚠️ 離脱削除失敗:", e);
+  }
+}
+
   });
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState === "hidden" && myRoomRef) {
@@ -304,6 +316,20 @@ submitJoin.addEventListener("click", async () => {
   // ✅ 参加完了後にフレーム情報を更新
   const roomRef = ref(db, `rooms/${roomNumber}`);
   const snapshot = await get(roomRef);
+  if (!snapshot.exists()) {
+  errorDisplay.style.display = "block";
+  errorDisplay.style.opacity = "1";
+  errorSound.play();
+  setTimeout(() => (errorDisplay.style.opacity = "0"), 1000);
+  setTimeout(() => (errorDisplay.style.display = "none"), 2500);
+  return;
+}
+
+if (snapshot.val().info.host === playerName) {
+  alert("⚠️ 自分が作成したルームには参加できません！");
+  return;
+}
+
   if (snapshot.exists()) {
     const data = snapshot.val();
     const info = data.info;
