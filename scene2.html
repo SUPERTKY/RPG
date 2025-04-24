@@ -236,6 +236,8 @@ button.addEventListener("click", async () => {
 
   // 離脱時にルームを削除してホームへ戻す
   window.addEventListener("beforeunload", async () => {
+    localStorage.removeItem("currentRoom");
+
     if (myRoomRef) {
       try {
         await remove(myRoomRef);
