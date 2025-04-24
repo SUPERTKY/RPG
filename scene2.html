@@ -222,6 +222,7 @@ button.addEventListener("click", async () => {
     alert(`✅ ルーム ${roomNumber} を作成しました！`);
 
     localStorage.setItem("currentRoom", roomNumber); // ✅ 状態も保存しておく
+    startRoomInfoListener(roomNumber); // 🔁 これを追加！
 
   } catch (err) {
     console.error("❌ 作成中にエラー:", err);
@@ -403,6 +404,63 @@ onValue(watchRef, (snapshot) => {
   }
 });
 
+});
+// ✅ メンバー情報のリアルタイム表示
+function startRoomInfoListener(roomNumber) {
+  const infoBox = document.getElementById("room-info");
+  const roomRef = ref(db, `rooms/${roomNumber}`);
+  onValue(roomRef, (snapshot) => {
+    if (!snapshot.exists()) return;
+
+    const data = snapshot.val();
+    const info = data.info;
+    const members = data.members || {};
+    const display =
+      `主催者: ${info?.host || "???"}\n` +
+      `番号: ${roomNumber}\n` +
+      `メンバー:\n` +
+      Object.keys(members).map(name => `・${name}`).join("\n");
+
+    if (infoBox) infoBox.innerText = display;
+  });
+}
+async function handleLeaveRoom() {
+  const currentRoom = localStorage.getItem("currentRoom");
+  const playerName = localStorage.getItem("playerName");
+
+  if (!currentRoom || !playerName) return;
+
+  try {
+    const roomRef = ref(db, `rooms/${currentRoom}`);
+    const snapshot = await get(roomRef);
+    const isHost = snapshot.val()?.info?.host === playerName;
+
+    if (isHost) {
+      await remove(roomRef);
+      console.log("✅ 主催者なのでルーム全体を削除");
+    } else {
+      await remove(ref(db, `rooms/${currentRoom}/members/${playerName}`));
+      console.log("✅ 参加者なのでメンバーから削除");
+    }
+    localStorage.removeItem("currentRoom");
+  } catch (e) {
+    console.warn("⚠️ 離脱時の削除失敗:", e);
+  }
+}
+
+// ✅ イベント設定
+window.addEventListener("beforeunload", async () => {
+  await handleLeaveRoom();
+});
+
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState === "hidden") {
+    await handleLeaveRoom();
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
 });
 
 </script>
