@@ -316,6 +316,10 @@ const errorSound = document.getElementById("error-sound");
 
 joinButton.addEventListener("click", () => {
   joinUI.style.display = "block";
+    button.style.pointerEvents = "none";
+  button.style.opacity = 0.5;
+  joinBtn.style.pointerEvents = "none";
+  joinBtn.style.opacity = 0.5;
 });
 
 submitJoin.addEventListener("click", async () => {
