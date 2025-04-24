@@ -352,11 +352,10 @@ submitJoin.addEventListener("click", async () => {
     return;
   }
 
-  // ✅ ここで初めて登録する
-  await set(ref(db, `rooms/${roomNumber}/members/${playerName}`), {
-    userId,
-    joinedAt: Date.now()
-  });
+await set(ref(db, `rooms/${roomNumber}/members/${userId}`), {
+  name: playerName,
+  joinedAt: Date.now()
+});
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
 
@@ -395,13 +394,14 @@ function startRoomInfoListener(roomNumber) {
     const data = snapshot.val();
     const info = data.info;
     const members = data.members || {};
-    const display =
-      `主催者: ${info?.host || "???"}\n` +
-      `番号: ${roomNumber}\n` +
-      `メンバー:\n` +
-      Object.keys(members).map(name => `・${name}`).join("\n");
+const display =
+  `主催者: ${info?.host || "???"}\n` +
+  `番号: ${roomNumber}\n` +
+  `メンバー:\n` +
+  Object.values(members).map(m => `・${m.name || "不明なユーザー"}`).join("\n");
 
-    if (infoBox) infoBox.innerText = display;
+if (infoBox) infoBox.innerText = display;
+
   });
 }
 async function handleLeaveRoom() {
@@ -430,7 +430,8 @@ async function handleLeaveRoom() {
       await remove(roomRef);
     } else {
       console.log("🧹 参加者としてメンバーから削除");
-      await remove(ref(db, `rooms/${currentRoom}/members/${playerName}`));
+     await remove(ref(db, `rooms/${currentRoom}/members/${userId}`));
+
     }
 
     localStorage.removeItem("currentRoom");
