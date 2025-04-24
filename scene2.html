@@ -193,12 +193,13 @@ button.addEventListener("click", async () => {
         host: playerName,
         createdAt: Date.now()
       },
-      members: {
-        [playerName]: {
-          userId: userId,
-          joinedAt: Date.now()
-        }
-      }
+members: {
+  [userId]: {
+    name: playerName,
+    joinedAt: Date.now()
+  }
+}
+
     });
 
     const confirm = await get(roomRef);
