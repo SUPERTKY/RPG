@@ -320,8 +320,12 @@ joinButton.addEventListener("click", () => {
     button.style.pointerEvents = "none";
   button.style.opacity = 0.5;
     const joinBtn = document.getElementById("join-room-button");
+  
+   const kotae = document.getElementById("submit-join");
   joinBtn.style.pointerEvents = "none";
   joinBtn.style.opacity = 0.5;
+  kotae.opacity = 0.5;
+  kotae.pointerEvents = "none";
 });
 
 submitJoin.addEventListener("click", async () => {
