@@ -360,7 +360,7 @@ await set(ref(db, `rooms/${roomNumber}/members/${userId}`), {
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
   submitJoin.disabled = true;
-submitJoin.style.opacity = 0.5;
+submitJoin.style.opacity = 1;
 submitJoin.style.pointerEvents = "none";
 
 
