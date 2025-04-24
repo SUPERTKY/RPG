@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -234,40 +235,42 @@ button.addEventListener("click", async () => {
   }
 });
 
-
-
-async function cleanUpRoomOnExit() {
-  const leavingRoom = localStorage.getItem("currentRoom");
-  const playerName = localStorage.getItem("playerName");
-  const userId = localStorage.getItem("userId");
-
-  if (!leavingRoom || !playerName || !userId) return;
-
-  try {
-    const roomRef = ref(db, `rooms/${leavingRoom}`);
-    const snapshot = await get(roomRef);
-    if (!snapshot.exists()) return;
-
-    const host = snapshot.val().info?.host;
-
-    if (host === playerName) {
-      // ✅ ホストの場合：ルーム全体削除
-      await remove(roomRef);
-      console.log("✅ ホストが抜けたのでルーム削除");
-    } else {
-      // ✅ 参加者の場合：自分だけ削除
-      await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
-      console.log("✅ 参加者が抜けたので自分だけ削除");
-    }
-
+  // 離脱時にルームを削除してホームへ戻す
+  window.addEventListener("beforeunload", async () => {
     localStorage.removeItem("currentRoom");
 
+    if (myRoomRef) {
+      try {
+        await remove(myRoomRef);
+        console.log("✅ ルームを削除しました");
+      } catch (e) {
+        console.warn("⚠️ ルーム削除失敗:", e);
+      }
+    }
+    const leavingRoom = localStorage.getItem("currentRoom");
+if (leavingRoom && playerName) {
+  try {
+    await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
+    await remove(ref(db, `online/${userId}`));
+    localStorage.removeItem("currentRoom");
+    console.log("✅ 離脱：オンライン情報とメンバー情報を削除しました");
   } catch (e) {
-    console.warn("⚠️ ルーム退出処理中にエラー:", e);
+    console.warn("⚠️ 離脱削除失敗:", e);
   }
 }
 
-
+  });
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState === "hidden" && myRoomRef) {
+    try {
+      await remove(myRoomRef);
+      console.log("✅ visibilitychangeでルーム削除");
+    } catch (e) {
+      console.warn("⚠️ visibilitychange削除失敗:", e);
+    }
+  }
+  
+});
 // タブが非表示になったときにホームへ強制移動する準備
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") {
