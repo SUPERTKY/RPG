@@ -101,7 +101,7 @@
 <!-- スクリプト：ルーム作成 + 離脱時削除 -->
 <script type="module">
   const currentRoom = localStorage.getItem("currentRoom");
-
+  const joinButton = document.getElementById("join-room-button");
 if (currentRoom) {
   const createBtn = document.getElementById("create-room-button");
   const joinBtn = document.getElementById("join-room-button");
@@ -119,6 +119,19 @@ if (currentRoom) {
   console.log(`🛑 ルーム(${currentRoom})に入っているので作成・参加ボタンを封じました`);
 }
 
+if (!currentRoom) {
+    const createBtn = document.getElementById("create-room-button");
+  const joinBtn = document.getElementById("join-room-button");
+  // ✅ ルームにいないときだけボタンを有効にする
+  if (createBtn) {
+    createBtn.style.opacity = "1";
+    createBtn.style.pointerEvents = "auto";
+  }
+  if (joinBtn) {
+    joinBtn.style.opacity = "1";
+    joinBtn.style.pointerEvents = "auto";
+  }
+}
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getDatabase, ref, get, set, child, remove, onValue  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
@@ -276,7 +289,7 @@ document.addEventListener("visibilitychange", () => {
     });
   }
 });
-const joinButton = document.getElementById("join-room-button");
+
 const joinUI = document.getElementById("join-ui");
 const submitJoin = document.getElementById("submit-join");
 const errorDisplay = document.getElementById("join-error");
