@@ -359,6 +359,10 @@ await set(ref(db, `rooms/${roomNumber}/members/${userId}`), {
 });
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
+  submitJoin.disabled = true;
+submitJoin.style.opacity = 0.5;
+submitJoin.style.pointerEvents = "none";
+
 
   localStorage.setItem("currentRoom", roomNumber);
   startRoomInfoListener(roomNumber);
