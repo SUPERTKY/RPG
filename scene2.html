@@ -304,10 +304,7 @@ submitJoin.addEventListener("click", async () => {
     userId,
     joinedAt: Date.now()
   });
-  await set(ref(db, `online/${userId}`), {
-  room: requestedRoom,
-  timestamp: Date.now()
-});
+
 
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
