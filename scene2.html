@@ -234,48 +234,16 @@ button.addEventListener("click", async () => {
   }
 });
 
- window.addEventListener("beforeunload", async () => {
+
+
+async function cleanUpRoomOnExit() {
   const leavingRoom = localStorage.getItem("currentRoom");
   const playerName = localStorage.getItem("playerName");
   const userId = localStorage.getItem("userId");
 
   if (!leavingRoom || !playerName || !userId) return;
 
-  const roomRef = ref(db, `rooms/${leavingRoom}`);
-  const snapshot = await get(roomRef);
-  if (!snapshot.exists()) return;
-
-  const host = snapshot.val().info?.host;
-
-  // ✅ 自分がホストだったらルームごと削除
-  if (host === playerName) {
-    try {
-      await remove(roomRef);
-      console.log("✅ ホストなのでルームごと削除");
-    } catch (e) {
-      console.warn("⚠️ ルーム削除失敗:", e);
-    }
-  } else {
-    // ✅ 参加者なら自分だけ削除
-    try {
-      await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
-      console.log("✅ 参加者なので自分だけ削除");
-    } catch (e) {
-      console.warn("⚠️ メンバー削除失敗:", e);
-    }
-  }
-
-  localStorage.removeItem("currentRoom");
-});
-
-document.addEventListener("visibilitychange", async () => {
-  if (document.visibilityState === "hidden") {
-    const leavingRoom = localStorage.getItem("currentRoom");
-    const playerName = localStorage.getItem("playerName");
-    const userId = localStorage.getItem("userId");
-
-    if (!leavingRoom || !playerName || !userId) return;
-
+  try {
     const roomRef = ref(db, `rooms/${leavingRoom}`);
     const snapshot = await get(roomRef);
     if (!snapshot.exists()) return;
@@ -283,29 +251,22 @@ document.addEventListener("visibilitychange", async () => {
     const host = snapshot.val().info?.host;
 
     if (host === playerName) {
-      try {
-        await remove(roomRef);
-        console.log("✅ visibilitychange: ホストなのでルーム削除");
-      } catch (e) {
-        console.warn("⚠️ visibilitychange: ルーム削除失敗:", e);
-      }
+      // ✅ ホストの場合：ルーム全体削除
+      await remove(roomRef);
+      console.log("✅ ホストが抜けたのでルーム削除");
     } else {
-      try {
-        await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
-        console.log("✅ visibilitychange: 参加者なので自分だけ削除");
-      } catch (e) {
-        console.warn("⚠️ visibilitychange: メンバー削除失敗:", e);
-      }
+      // ✅ 参加者の場合：自分だけ削除
+      await remove(ref(db, `rooms/${leavingRoom}/members/${playerName}`));
+      console.log("✅ 参加者が抜けたので自分だけ削除");
     }
 
     localStorage.removeItem("currentRoom");
 
-    // 自動でホームに戻す
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 2000);
+  } catch (e) {
+    console.warn("⚠️ ルーム退出処理中にエラー:", e);
   }
-});
+}
+
 
 // タブが非表示になったときにホームへ強制移動する準備
 document.addEventListener("visibilitychange", () => {
