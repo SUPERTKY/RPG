@@ -428,41 +428,55 @@ function startRoomInfoListener(roomNumber) {
 async function handleLeaveRoom() {
   const currentRoom = localStorage.getItem("currentRoom");
   const playerName = localStorage.getItem("playerName");
+  const userId = localStorage.getItem("userId");
 
-  if (!currentRoom || !playerName) return;
+  if (!currentRoom || !playerName) {
+    console.warn("⚠️ currentRoom か playerName がありません");
+    return;
+  }
 
+  const roomRef = ref(db, `rooms/${currentRoom}`);
   try {
-    const roomRef = ref(db, `rooms/${currentRoom}`);
     const snapshot = await get(roomRef);
+
+    if (!snapshot.exists()) {
+      console.warn("⚠️ ルームが存在しません");
+      return;
+    }
+
     const isHost = snapshot.val()?.info?.host === playerName;
 
     if (isHost) {
+      console.log("🧹 主催者としてルーム全削除");
       await remove(roomRef);
-      console.log("✅ 主催者なのでルーム全体を削除");
     } else {
+      console.log("🧹 参加者としてメンバーから削除");
       await remove(ref(db, `rooms/${currentRoom}/members/${playerName}`));
-      console.log("✅ 参加者なのでメンバーから削除");
     }
+
     localStorage.removeItem("currentRoom");
+
   } catch (e) {
-    console.warn("⚠️ 離脱時の削除失敗:", e);
+    console.error("❌ handleLeaveRoom エラー:", e);
   }
 }
 
-// ✅ イベント設定
-window.addEventListener("beforeunload", async () => {
-  await handleLeaveRoom();
+
+window.addEventListener("beforeunload", async (e) => {
+  e.preventDefault();
+  await handleLeaveRoom(); // 🔁 確実に await
 });
 
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState === "hidden") {
-    await handleLeaveRoom();
+    await handleLeaveRoom(); // 🔁 visibilitychangeでも統一
 
     setTimeout(() => {
       window.location.href = "index.html";
     }, 2000);
   }
 });
+
 
 </script>
 
