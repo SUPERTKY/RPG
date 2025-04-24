@@ -154,30 +154,29 @@ if (currentRoom) {
     return roomNumber;
   }
 
-button.addEventListener("click", async () => {
-   // 他タブなどにすでに入ってないか確認
-  const onlineRef = ref(db, `online/${userId}`);
-  const onlineSnap = await get(onlineRef);
-  if (onlineSnap.exists()) {
-    const alreadyRoom = onlineSnap.val().room;
-    if (alreadyRoom !== requestedRoom) {
-      alert("⚠️ 他のタブや端末ですでにルームに参加中です！");
-      return;
-    }
-  }
-  const joinBtn = document.getElementById("join-room-button");
+let isCreating = false; // 🔒 スクリプトの上の方に1回だけ定義しておく！
 
+button.addEventListener("click", async () => {
+  if (isCreating) return; // ✅ すでに作成中なら無視
+  isCreating = true;      // ✅ ロックをかける
+
+  const joinBtn = document.getElementById("join-room-button");
   button.style.pointerEvents = "none";
   button.style.opacity = 0.5;
-joinBtn.style.pointerEvents = "none";
+  joinBtn.style.pointerEvents = "none";
   joinBtn.style.opacity = 0.5;
 
+  const playerName = localStorage.getItem("playerName");
+  const userId = localStorage.getItem("userId");
 
   if (!playerName || !userId) {
     alert("ユーザー情報がありません！");
     console.warn("❌ localStorageにplayerNameまたはuserIdが存在しません");
     button.style.pointerEvents = "auto";
     button.style.opacity = 1;
+    joinBtn.style.pointerEvents = "auto";
+    joinBtn.style.opacity = 1;
+    isCreating = false; // ❌失敗時にもロックを外す！
     return;
   }
 
@@ -187,7 +186,6 @@ joinBtn.style.pointerEvents = "none";
 
     console.log("💾 Firebaseへルーム保存:", roomNumber);
 
-    // Firebaseに保存
     await set(roomRef, {
       info: {
         host: playerName,
@@ -200,48 +198,38 @@ joinBtn.style.pointerEvents = "none";
         }
       }
     });
+
     const confirm = await get(roomRef);
-if (!confirm.exists()) {
-  throw new Error("⚠️ Firebaseにルームが見つかりません（保存失敗）");
-}
-
-// ✅ 表示処理
-const data = confirm.val();
-const info = data.info;
-const members = data.members || {};
-const display =
-  `主催者: ${info?.host || "???"}\n` +
-  `番号: ${roomNumber}\n` +
-  `メンバー:\n` +
-  Object.keys(members)
-    .map(name => `・${name}`)
-    .join("\n");
-
-const infoBox = document.getElementById("room-info");
-if (infoBox) {
-  infoBox.innerText = display;
-}
-
-
-
     if (!confirm.exists()) {
       throw new Error("⚠️ Firebaseにルームが見つかりません（保存失敗）");
     }
 
+    const data = confirm.val();
+    const info = data.info;
+    const members = data.members || {};
+    const display =
+      `主催者: ${info?.host || "???"}\n` +
+      `番号: ${roomNumber}\n` +
+      `メンバー:\n` +
+      Object.keys(members).map(name => `・${name}`).join("\n");
+
+    const infoBox = document.getElementById("room-info");
+    if (infoBox) infoBox.innerText = display;
+
     myRoomRef = roomRef;
     alert(`✅ ルーム ${roomNumber} を作成しました！`);
 
-    // ✅ 表示処理
-
-   
-
-    document.getElementById("room-info").innerText = display;
+    localStorage.setItem("currentRoom", roomNumber); // ✅ 状態も保存しておく
 
   } catch (err) {
     console.error("❌ 作成中にエラー:", err);
     alert("❌ ルーム作成に失敗しました！");
     button.style.pointerEvents = "auto";
     button.style.opacity = 1;
+    joinBtn.style.pointerEvents = "auto";
+    joinBtn.style.opacity = 1;
+  } finally {
+    isCreating = false; // ✅ 成功でも失敗でもロックを解除
   }
 });
 
