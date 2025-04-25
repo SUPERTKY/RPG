@@ -436,11 +436,11 @@ function startRoomInfoListener(roomNumber) {
 
     // ✅ 準備OKチェックは onValue の中で行う！
     const allReady = Object.values(members).every(m => m.status === "ready");
-    if (allReady && Object.keys(members).length === 4) {
-      console.log("🚦 全員準備完了！");
-      alert("🎉 全員準備完了！ゲームスタート！");
-      // window.location.href = "game.html"; ← ここで遷移してもOK
-    }
+if (allReady && Object.keys(members).length === 4) {
+  console.log("🚦 全員準備完了！");
+  window.location.href = "game.html"; // ✅ 任意のページに移動
+}
+
   });
 }
 
