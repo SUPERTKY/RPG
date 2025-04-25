@@ -170,6 +170,7 @@ let isCreating = false; // 🔒 スクリプトの上の方に1回だけ定義�
 button.addEventListener("click", async () => {
   if (isCreating) return; // ✅ すでに作成中なら無視
   isCreating = true;      // ✅ ロックをかける
+  document.getElementById("ready-button").style.display = "block";
 
   const joinBtn = document.getElementById("join-room-button");
   button.style.pointerEvents = "none";
@@ -384,6 +385,8 @@ submitJoin.addEventListener("click", async () => {
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
 
   localStorage.setItem("currentRoom", roomNumber);
+  document.getElementById("ready-button").style.display = "block";
+
   startRoomInfoListener(roomNumber);
 
   submitJoin.disabled = true;
