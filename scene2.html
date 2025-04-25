@@ -419,6 +419,14 @@ submitJoin.addEventListener("click", async () => {
 function startRoomInfoListener(roomNumber) {
   const infoBox = document.getElementById("room-info");
   const roomRef = ref(db, `rooms/${roomNumber}`);
+  const allReady = Object.values(members).every(m => m.status === "ready");
+
+if (allReady && Object.keys(members).length === 4) {
+  console.log("🚦 全員準備完了！");
+  alert("🎉 全員準備完了！ゲームスタート！");
+  // ✅ 例：window.location.href = "game.html"; にしてもいい
+}
+
   onValue(roomRef, (snapshot) => {
     if (!snapshot.exists()) return;
 
