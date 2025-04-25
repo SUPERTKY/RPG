@@ -415,35 +415,35 @@ submitJoin.addEventListener("click", async () => {
 });
 
 
-// ✅ メンバー情報のリアルタイム表示
 function startRoomInfoListener(roomNumber) {
-      const data = snapshot.val();
-    const info = data.info;
-    const members = data.members || {};
   const infoBox = document.getElementById("room-info");
   const roomRef = ref(db, `rooms/${roomNumber}`);
-  const allReady = Object.values(members).every(m => m.status === "ready");
-
-if (allReady && Object.keys(members).length === 4) {
-  console.log("🚦 全員準備完了！");
-  alert("🎉 全員準備完了！ゲームスタート！");
-  // ✅ 例：window.location.href = "game.html"; にしてもいい
-}
 
   onValue(roomRef, (snapshot) => {
     if (!snapshot.exists()) return;
 
+    const data = snapshot.val();
+    const info = data.info;
+    const members = data.members || {};
 
-const display =
-  `主催者: ${info?.host || "???"}\n` +
-  `番号: ${roomNumber}\n` +
-  `メンバー:\n` +
-  Object.values(members).map(m => `・${m.name || "不明なユーザー"}`).join("\n");
+    const display =
+      `主催者: ${info?.host || "???"}\n` +
+      `番号: ${roomNumber}\n` +
+      `メンバー:\n` +
+      Object.values(members).map(m => `・${m.name || "不明なユーザー"}`).join("\n");
 
-if (infoBox) infoBox.innerText = display;
+    if (infoBox) infoBox.innerText = display;
 
+    // ✅ 準備OKチェックは onValue の中で行う！
+    const allReady = Object.values(members).every(m => m.status === "ready");
+    if (allReady && Object.keys(members).length === 4) {
+      console.log("🚦 全員準備完了！");
+      alert("🎉 全員準備完了！ゲームスタート！");
+      // window.location.href = "game.html"; ← ここで遷移してもOK
+    }
   });
 }
+
 async function handleLeaveRoom() {
   const currentRoom = localStorage.getItem("currentRoom");
   const playerName = localStorage.getItem("playerName");
