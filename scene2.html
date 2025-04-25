@@ -353,21 +353,34 @@ submitJoin.addEventListener("click", async () => {
     return;
   }
 
-await set(ref(db, `rooms/${roomNumber}/members/${userId}`), {
-  name: playerName,
-  joinedAt: Date.now()
-});
+  const members = snapshot.val().members || {};
+  const currentCount = Object.keys(members).length;
+
+  if (currentCount >= 4) {
+    // ❌ 人数制限オーバー
+    errorDisplay.textContent = "満員です";
+    errorDisplay.style.display = "block";
+    errorDisplay.style.opacity = "1";
+    errorSound.play();
+    setTimeout(() => (errorDisplay.style.opacity = "0"), 1000);
+    setTimeout(() => (errorDisplay.style.display = "none"), 2500);
+    return;
+  }
+
+  await set(ref(db, `rooms/${roomNumber}/members/${userId}`), {
+    name: playerName,
+    joinedAt: Date.now()
+  });
 
   alert(`✅ ルーム ${roomNumber} に参加しました！`);
-  submitJoin.disabled = true;
-submitJoin.style.opacity = 1;
-submitJoin.style.pointerEvents = "none";
-
 
   localStorage.setItem("currentRoom", roomNumber);
   startRoomInfoListener(roomNumber);
 
-  // 🔁 主催者が解散したときの監視も再設定（元のコードと同じ）
+  submitJoin.disabled = true;
+  submitJoin.style.opacity = 0.5;
+  submitJoin.style.pointerEvents = "none";
+
   const watchRef = ref(db, `rooms/${roomNumber}`);
   onValue(watchRef, (snapshot) => {
     if (!snapshot.exists()) {
@@ -388,6 +401,7 @@ submitJoin.style.pointerEvents = "none";
     }
   });
 });
+
 
 // ✅ メンバー情報のリアルタイム表示
 function startRoomInfoListener(roomNumber) {
