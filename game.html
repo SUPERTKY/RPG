@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ゲームスタート</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      background-image: url("assets/ゲーム背景.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #message {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      font-size: 32px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px black;
+    }
+  </style>
+</head>
+<body>
+  <div id="message">ゲームを開始します…</div>
+
+  <audio id="bgm" src="assets/ゲーム音楽.mp3"></audio>
+
+  <script>
+    // 5秒後にBGM再生
+    setTimeout(() => {
+      const bgm = document.getElementById("bgm");
+      bgm.play().catch(err => {
+        console.warn("🎵 オーディオ再生エラー:", err);
+      });
+      document.getElementById("message").innerText = "冒険の始まりだ！";
+    }, 5000);
+  </script>
+</body>
+</html>
